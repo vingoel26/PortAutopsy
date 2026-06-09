@@ -15,7 +15,7 @@ Quick start:
 """
 
 from .tracer import trace_agent
-from .sdk import get_traces, get_trace, get_trace_count, clear_traces
+from .sdk import get_traces, get_trace, get_trace_count, clear_traces, add_downstream_effect
 from .models import (
     TraceEvent,
     AutopsyReport,

@@ -10,8 +10,17 @@ from __future__ import annotations
 import json
 import sqlite3
 from .event_stream import all_events, events_for, event_count, clear
+from .event_stream import append_downstream_effect as _stream_append
 from .event_logger import DB_PATH
+from .event_logger import append_downstream_effect as _db_append
 from .models import TraceEvent, DownstreamEffect, EventStatus
+
+
+def add_downstream_effect(agent_id: str, round_num: int, effect: DownstreamEffect) -> None:
+    """Attach a downstream effect to both in-memory and SQLite trace stores."""
+    _stream_append(agent_id, round_num, effect)
+    if DB_PATH.exists():
+        _db_append(agent_id, round_num, effect)
 
 
 def get_traces(agent_id: str | None = None) -> list[TraceEvent]:

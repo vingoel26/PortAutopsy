@@ -8,7 +8,7 @@ for real-time analysis. Thread-safe for concurrent agent execution.
 from __future__ import annotations
 
 import threading
-from .models import TraceEvent
+from .models import TraceEvent, DownstreamEffect
 
 # ── Internal storage ─────────────────────────────────────────
 
@@ -44,3 +44,13 @@ def clear() -> None:
     """Clear all events (useful between simulation runs)."""
     with _lock:
         _stream.clear()
+
+
+def append_downstream_effect(agent_id: str, round_num: int, effect: DownstreamEffect) -> None:
+    """Attach a downstream effect to the in-memory event stream."""
+    with _lock:
+        # Find the latest event for this agent in this round
+        for event in reversed(_stream):
+            if event.agent_id == agent_id and event.round == round_num:
+                event.downstream_effects.append(effect)
+                break

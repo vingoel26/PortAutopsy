@@ -92,3 +92,24 @@ def read_all_from_db() -> list[dict]:
     for row in cur.fetchall():
         rows.append(dict(zip(columns, row)))
     return rows
+
+
+def append_downstream_effect(agent_id: str, round_num: int, effect: DownstreamEffect) -> None:
+    """Attach a downstream effect to an existing trace event in SQLite."""
+    con = _get_connection()
+    # Fetch existing downstream_json
+    row = con.execute(
+        "SELECT downstream_json FROM trace_events WHERE agent_id=? AND round=? ORDER BY timestamp DESC LIMIT 1",
+        (agent_id, round_num)
+    ).fetchone()
+    if not row:
+        return
+
+    current = json.loads(row[0] or "[]")
+    current.append(effect.model_dump())
+
+    con.execute(
+        "UPDATE trace_events SET downstream_json=? WHERE agent_id=? AND round=?",
+        (json.dumps(current, default=str), agent_id, round_num)
+    )
+    con.commit()
