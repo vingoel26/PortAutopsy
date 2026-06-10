@@ -3,48 +3,120 @@
     "trace_id": "tr_0x4f3a",
     "agent_id": "container_047",
     "round": 3,
-    "inputs": { "temperature_constraint": null, "urgency": "HIGH" },
+    "inputs": {
+      "container": {
+        "container_id": "container_047",
+        "cargo_type": "cold_chain",
+        "temperature_constraint": null,
+        "urgency": "HIGH",
+        "size_teu": 1,
+        "customs_cleared": true,
+        "dwell_time_target": 4.0
+      },
+      "available_slots": ["crane_5", "crane_6", "crane_7"],
+      "round_num": 3
+    },
     "chain_of_thought": "Temperature constraint is null, treating as standard cargo.",
-    "output": { "action": "BID", "slot": "crane_5_t14", "bid_value": 0.72 }
-  },
-  {
-    "trace_id": "tr_0x1a2b",
-    "agent_id": "constraint_parser",
-    "round": 1,
-    "inputs": { "temperature_constraint": 4.0, "cargo_type": "cold_chain" },
-    "chain_of_thought": "Parsing container constraints.",
-    "output": { "action": "PARSE", "temperature_constraint": null, "dropped": true }
+    "output": { "action": "BID", "slot": "crane_5", "bid_value": 0.72 }
   },
   {
     "trace_id": "tr_0x3c4d",
     "agent_id": "container_112",
     "round": 2,
-    "inputs": { "temperature_constraint": 3.5, "urgency": "NORMAL" },
-    "chain_of_thought": "Cold chain cargo, selected refrigerated slot.",
-    "output": { "action": "BID", "slot": "crane_0_t10", "bid_value": 0.85 }
+    "inputs": {
+      "container": {
+        "container_id": "container_112",
+        "cargo_type": "cold_chain",
+        "temperature_constraint": 3.5,
+        "urgency": "NORMAL",
+        "size_teu": 1,
+        "customs_cleared": true,
+        "dwell_time_target": 4.0
+      },
+      "available_slots": ["crane_0", "crane_1", "crane_2"],
+      "round_num": 2
+    },
+    "chain_of_thought": "Cold chain cargo, selected refrigerated slot crane_0.",
+    "output": { "action": "BID", "slot": "crane_0", "bid_value": 0.85 }
   },
   {
     "trace_id": "tr_0x5e6f",
     "agent_id": "container_183",
     "round": 1,
-    "inputs": { "temperature_constraint": null, "urgency": "LOW" },
+    "inputs": {
+      "container": {
+        "container_id": "container_183",
+        "cargo_type": "standard",
+        "temperature_constraint": null,
+        "urgency": "LOW",
+        "size_teu": 1,
+        "customs_cleared": true,
+        "dwell_time_target": 4.0
+      },
+      "available_slots": ["crane_3", "crane_4", "crane_8"],
+      "round_num": 1
+    },
     "chain_of_thought": "Standard cargo, selected cheapest available slot.",
-    "output": { "action": "BID", "slot": "crane_3_t8", "bid_value": 0.45 }
+    "output": { "action": "BID", "slot": "crane_3", "bid_value": 0.45 }
   },
   {
     "trace_id": "tr_0x7a8b",
     "agent_id": "container_201",
     "round": 4,
-    "inputs": { "temperature_constraint": null, "urgency": "CRITICAL" },
-    "chain_of_thought": "CRITICAL urgency, bidding maximum on first available slot.",
-    "output": { "action": "BID", "slot": "crane_2_t12", "bid_value": 0.99 }
+    "inputs": {
+      "container": {
+        "container_id": "container_201",
+        "cargo_type": "hazmat",
+        "temperature_constraint": null,
+        "urgency": "CRITICAL",
+        "size_teu": 2,
+        "customs_cleared": true,
+        "dwell_time_target": 2.0
+      },
+      "available_slots": ["crane_2", "crane_9", "crane_10"],
+      "round_num": 4
+    },
+    "chain_of_thought": "CRITICAL urgency hazmat, bidding maximum on first available slot.",
+    "output": { "action": "BID", "slot": "crane_9", "bid_value": 0.99 }
   },
   {
     "trace_id": "tr_0x9c0d",
     "agent_id": "container_099",
     "round": 2,
-    "inputs": { "temperature_constraint": null, "urgency": "HIGH" },
+    "inputs": {
+      "container": {
+        "container_id": "container_099",
+        "cargo_type": "standard",
+        "temperature_constraint": null,
+        "urgency": "HIGH",
+        "size_teu": 1,
+        "customs_cleared": true,
+        "dwell_time_target": 4.0
+      },
+      "available_slots": ["crane_7", "crane_11", "crane_15"],
+      "round_num": 2
+    },
     "chain_of_thought": "Standard cargo, selected cheapest available slot.",
-    "output": { "action": "BID", "slot": "crane_7_t6", "bid_value": 0.61 }
+    "output": { "action": "BID", "slot": "crane_7", "bid_value": 0.61 }
+  },
+  {
+    "trace_id": "tr_0xab12",
+    "agent_id": "container_031",
+    "round": 1,
+    "inputs": {
+      "container": {
+        "container_id": "container_031",
+        "cargo_type": "cold_chain",
+        "temperature_constraint": 6.0,
+        "urgency": "NORMAL",
+        "size_teu": 1,
+        "customs_cleared": true,
+        "dwell_time_target": 4.0
+      },
+      "available_slots": ["crane_6", "crane_12", "crane_18"],
+      "round_num": 1
+    },
+    "chain_of_thought": "Cold chain cargo, selected refrigerated slot crane_6.",
+    "output": { "action": "BID", "slot": "crane_6", "bid_value": 0.78 }
   }
 ]
