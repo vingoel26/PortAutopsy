@@ -1,9 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import mockTraces from '../mock/traces.json';
 
-export default function AgentTimeline({ apiUrl = null }) {
-  const [traces] = useState(mockTraces);
+const isFailureEvent = (e) => {
+  const str = JSON.stringify(e.output || {}) + JSON.stringify(e.downstream_effects || {});
+  return str.toLowerCase().includes('violation') || str.toLowerCase().includes('dropped');
+};
+
+export default function AgentTimeline({ apiUrl = 'http://localhost:8000/traces' }) {
+  const [traces, setTraces] = useState(mockTraces);
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.length > 0) setTraces(data);
+      })
+      .catch(() => {
+        // Fallback to mock traces if the server isn't up
+        setTraces(mockTraces);
+      });
+  }, [apiUrl]);
 
   const byAgent = traces.reduce((acc, t) => {
     if (!acc[t.agent_id]) acc[t.agent_id] = [];
@@ -19,19 +36,28 @@ export default function AgentTimeline({ apiUrl = null }) {
           <div key={agent} style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
             <span style={{ fontSize: 10, width: 90, flexShrink: 0, color: '#64748b' }}>{agent}</span>
             <div style={{ display: 'flex', gap: 2 }}>
-              {events.map((e) => (
-                <div
-                  key={e.trace_id}
-                  onClick={() => setSelected(e)}
-                  style={{
-                    width: 12,
-                    height: 20,
-                    borderRadius: 2,
-                    cursor: 'pointer',
-                    background: selected?.trace_id === e.trace_id ? '#3b82f6' : '#93c5fd',
-                  }}
-                />
-              ))}
+              {events.map((e) => {
+                const failed = isFailureEvent(e);
+                const isSelected = selected?.trace_id === e.trace_id;
+                
+                let bg;
+                if (failed) bg = isSelected ? '#dc2626' : '#fca5a5';
+                else bg = isSelected ? '#3b82f6' : '#93c5fd';
+
+                return (
+                  <div
+                    key={e.trace_id}
+                    onClick={() => setSelected(e)}
+                    style={{
+                      width: 12,
+                      height: 20,
+                      borderRadius: 2,
+                      cursor: 'pointer',
+                      background: bg,
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
         ))}
